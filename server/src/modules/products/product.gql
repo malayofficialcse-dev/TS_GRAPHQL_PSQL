@@ -1,0 +1,14 @@
+type Product {
+    id:ID!
+    nameString!
+    price:Float!
+    category_id:ID
+}
+
+export type Queue {
+    getProdcuts:[Product]
+}
+
+extend type Mutation {
+    createProduct(name:String!,price:Float!,category_id:ID):Product
+}

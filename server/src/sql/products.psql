@@ -1,0 +1,7 @@
+CREATE TABLE products (
+    id SERIAL PRIMARY KEY,
+    name TEXT,
+    price FLOAT,
+    category_id INT REFERENCES categories(id)
+);
+

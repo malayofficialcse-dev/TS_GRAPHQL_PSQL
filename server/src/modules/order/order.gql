@@ -1,0 +1,9 @@
+type Order {
+    id:ID!
+    user_id:ID!
+    product_id:ID!
+}
+
+extend type Mutation {
+    createOrder(user_id:ID!,product_id:ID!):Order
+}
