@@ -26,3 +26,9 @@ export const getUserById = async (id:number) => {
 export const deleteUser = async (id : number) => {
     await pool.query(queries.DELETE_USER,[id]);
 };
+
+export const updateUser = async (id:number,name:string) => {
+    const res = await pool.query(queries.UPDATE_USER,[name,id]);
+    return res.rows[0];
+};
+
