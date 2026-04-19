@@ -12,6 +12,9 @@ export const createCategory = async (req: Request, res: Response) => {
     const category = await categoryService.createCategory({ name });
     return res.status(201).json(category);
   } catch (err) {
+    if(err && typeof err === "object" && "message" in err && err.code === "23505"){
+      return res.status(409).json({ error: "Category name must be unique" });
+    }
     console.error("Create category error:", err);
     return res.status(500).json({
       error: "Failed to create category",
@@ -26,6 +29,12 @@ export const getCategories = async (_req: Request, res: Response) => {
 };
 
 export const getCategoryById = async (req: Request, res: Response) => {
+  const id = Number(req.params.id);
+
+  if(Number.isNaN(id)){
+    return res.status(400).json({error:"Invalid category id"});
+  }
+
   const category = await categoryService.getCategoryById(Number(req.params.id));
   return res.json(category);
 };

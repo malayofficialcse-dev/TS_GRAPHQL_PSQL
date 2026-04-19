@@ -18,9 +18,28 @@ export const getCategories = async () => {
 
 export const getCategoryById = async (id: number) => {
     const result = await pool.query(queries.GET_CATEGORY_BY_ID, [id]);
+    
+    if(result.rowCount === 0){
+        throw new Error(`Category with id ${id} not found`);
+    }
+    
     return result.rows[0];
 };
 
 export const deleteCategory = async (id: number) => {
-    await pool.query(queries.DELETE_CATEGORY, [id]);
+    const result = await pool.query(queries.DELETE_CATEGORY,[id]);
+
+    if(result.rowCount === 0) {
+        throw new Error(`Category with id ${id} not found`);
+    }
+    return result.rows[0];
 };
+
+export const updateCategory = async (id:Number,name:String) => {
+    const result = await pool.query(queries.UPDATE_CATEGORY,[name,id]);
+
+    if(result.rowCount === 0){
+        throw new Error(`Category with id ${id} not found`);
+    }
+    return result.rows[0];
+}

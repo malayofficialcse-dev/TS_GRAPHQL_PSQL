@@ -11,4 +11,6 @@ extend type Query {
 extend type Mutation {
     createCategory(name:String!):Category
     deleteCategory(id:ID!):String
+    updateCategory(id:ID!,name:String )
 }
+
