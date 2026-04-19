@@ -5,8 +5,10 @@ type Category{
 
 extend type Query {
     getCategories:[Category]
+    getCategoryById(id:ID!):Category
 }
 
 extend type Mutation {
     createCategory(name:String!):Category
+    deleteCategory(id:ID!):String
 }

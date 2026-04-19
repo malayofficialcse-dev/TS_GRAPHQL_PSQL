@@ -18,8 +18,8 @@ export const userResolvers = {
             await userService.deleteUser(args.id);
             return "User deleted";
         },
-        updateUser:(_:any,args:any) => {
-            userService.updateUser(args.id,args.name);
+        updateUser: async (_:any,args:any) => {
+            return await userService.updateUser(args.id,args.name);
         }
     },
 };

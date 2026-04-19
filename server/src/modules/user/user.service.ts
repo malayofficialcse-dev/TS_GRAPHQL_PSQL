@@ -1,6 +1,6 @@
-import { pool } from "../../config/db.ts";
-import * as queries from "./user.query.ts";
-import { User } from "./user.model.ts";
+import { pool } from "../../config/db.js";
+import * as queries from "./user.query.js";
+import { User } from "./user.model.js";
 
 
 export const createUserTable = async () => {

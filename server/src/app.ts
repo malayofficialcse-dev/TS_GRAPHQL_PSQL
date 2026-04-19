@@ -5,6 +5,7 @@ import { startStandaloneServer } from "@apollo/server/standalone";
 
 import { typeDefs } from "./graphql/schema.js";
 import { resolvers } from "./graphql/resolvers.js";
+import categoryRoutes from "./modules/category/category.route.js";
 import userRoutes from "./modules/user/user.route.js";
 
 const app = express();
@@ -13,6 +14,7 @@ app.use(cors());
 app.use(express.json());
 
 // REST API routes
+app.use("/api/categories", categoryRoutes);
 app.use("/api/users", userRoutes);
 
 // Health check route

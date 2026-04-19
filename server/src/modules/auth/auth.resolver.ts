@@ -2,12 +2,12 @@ import * as services from "./auth.service";
 
 export const authResolver = {
     Mutation : {
-        signup:(_:any,args:any) => {
-            services.signup(args.name,args.email,args.password)
+        signup: async (_:any,args:any) => {
+            return await services.signup(args.name,args.email,args.password);
         },
 
-        login:(_:any,args:any) => {
-            services.login(args.email,args.password)
+        login: async (_:any,args:any) => {
+            return await services.login(args.email,args.password);
         }
     },
 }

@@ -1,12 +1,12 @@
 type Product {
     id:ID!
-    nameString!
+    name:String!
     price:Float!
     category_id:ID
 }
 
-export type Queue {
-    getProdcuts:[Product]
+extend type Query {
+    getProducts:[Product]
 }
 
 extend type Mutation {
