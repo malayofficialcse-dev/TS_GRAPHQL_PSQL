@@ -9,5 +9,8 @@ export const CREATE_PRODUCT_TABLE = `
 export const CREATE_PRODUCT = `
     INSERT INTO products(name, price, category_id)
     VALUES($1, $2, $3)
-    RETURNING *;
+    RETURNING *);
 `;
+
+export const GET_PRODUCTS = `
+    SELECT * FROM products ORDER BY id ASC`;
