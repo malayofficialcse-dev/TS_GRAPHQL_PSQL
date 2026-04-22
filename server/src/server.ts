@@ -1,6 +1,7 @@
 import app from "./app";
 import { createCategoryTable } from "./modules/category/category.service.js";
 import { createUserTable } from "./modules/user/user.service";
+import { createProductTable } from "./modules/products/product.service";
 import { ApolloServer } from "@apollo/server";
 import { typeDefs } from "./graphql/schema.js";
 import { resolvers } from "./graphql/resolvers.js";
@@ -62,6 +63,8 @@ async function startServer() {
       try {
         await createCategoryTable();
         await createUserTable();
+        await createUserTable();
+        
         console.log("Database connection established");
       } catch (error) {
         logDatabaseStartupError(error);

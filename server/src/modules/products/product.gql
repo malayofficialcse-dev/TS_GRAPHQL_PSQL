@@ -7,8 +7,11 @@ type Product {
 
 extend type Query {
     getProducts:[Product]
+    getProductById(id:ID!):Product
 }
 
 extend type Mutation {
     createProduct(name:String!,price:Float!,category_id:ID):Product
+    updateProduct(id:ID!,name:String!,price:Float!,category_id:ID):Product
+    deleteProduct(id:ID!):Product
 }
