@@ -18,4 +18,13 @@ export const resolvers = {
     ...userResolvers.Mutation,
     ...authResolver.Mutation,
   },
+  Order: {
+    ...orderResolvers.Order,
+  },
+  User: {
+    ...orderResolvers.User,
+  },
+  Product: {
+    ...orderResolvers.Product,
+  },
 };

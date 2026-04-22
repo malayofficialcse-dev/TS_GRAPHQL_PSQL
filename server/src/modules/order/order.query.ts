@@ -19,6 +19,14 @@ export const GET_ORDER_BY_ID = `
     SELECT * FROM orders WHERE id = $1;
 `;
 
+export const GET_ORDERS_BY_USER_ID = `
+    SELECT * FROM orders WHERE user_id = $1 ORDER BY id ASC;
+`;
+
+export const GET_ORDERS_BY_PRODUCT_ID = `
+    SELECT * FROM orders WHERE product_id = $1 ORDER BY id ASC;
+`;
+
 export const UPDATE_ORDER = `
     UPDATE orders
     SET user_id = $1, product_id = $2

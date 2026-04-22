@@ -25,6 +25,16 @@ export const getOrderById = async (id: number) => {
     return result.rows[0];
 };
 
+export const getOrdersByUserId = async (user_id: number) => {
+    const result = await pool.query(queries.GET_ORDERS_BY_USER_ID, [user_id]);
+    return result.rows;
+};
+
+export const getOrdersByProductId = async (product_id: number) => {
+    const result = await pool.query(queries.GET_ORDERS_BY_PRODUCT_ID, [product_id]);
+    return result.rows;
+};
+
 export const updateOrder = async (
     id: number,
     user_id: number,

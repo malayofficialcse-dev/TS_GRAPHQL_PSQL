@@ -1,4 +1,6 @@
 import * as orderService from "./order.service.js";
+import * as userService from "../user/user.service.js";
+import * as productService from "../products/product.service.js";
 
 export const orderResolvers = {
     Query: {
@@ -31,6 +33,24 @@ export const orderResolvers = {
         },
         deleteOrder: async (_: unknown, args: { id: number }) => {
             return await orderService.deleteOrder(args.id);
+        },
+    },
+    Order: {
+        user: async (parent: { user_id: number }) => {
+            return await userService.getUserById(parent.user_id);
+        },
+        product: async (parent: { product_id: number }) => {
+            return await productService.getProductById(parent.product_id);
+        },
+    },
+    User: {
+        orders: async (parent: { id: number }) => {
+            return await orderService.getOrdersByUserId(parent.id);
+        },
+    },
+    Product: {
+        orders: async (parent: { id: number }) => {
+            return await orderService.getOrdersByProductId(parent.id);
         },
     },
 };
