@@ -1,5 +1,6 @@
 import app from "./app";
 import { createCategoryTable } from "./modules/category/category.service.js";
+import { createOrderTable } from "./modules/order/order.service.js";
 import { createUserTable } from "./modules/user/user.service";
 import { createProductTable } from "./modules/products/product.service";
 import { ApolloServer } from "@apollo/server";
@@ -63,7 +64,8 @@ async function startServer() {
       try {
         await createCategoryTable();
         await createUserTable();
-        await createUserTable();
+        await createProductTable();
+        await createOrderTable();
         
         console.log("Database connection established");
       } catch (error) {

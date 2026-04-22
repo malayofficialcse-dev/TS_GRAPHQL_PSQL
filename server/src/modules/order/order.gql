@@ -4,6 +4,13 @@ type Order {
     product_id:ID!
 }
 
+extend type Query {
+    getOrders:[Order]
+    getOrderById(id:ID!):Order
+}
+
 extend type Mutation {
     createOrder(user_id:ID!,product_id:ID!):Order
+    updateOrder(id:ID!,user_id:ID!,product_id:ID!):Order
+    deleteOrder(id:ID!):Order
 }
