@@ -1,0 +1,56 @@
+-- Roles Table
+CREATE TABLE IF NOT EXISTS roles (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(50) UNIQUE NOT NULL
+);
+
+-- Permissions Table
+CREATE TABLE IF NOT EXISTS permissions (
+    id SERIAL PRIMARY KEY,
+    code VARCHAR(100) UNIQUE NOT NULL,
+    description TEXT
+);
+
+-- Role-Permissions Mapping
+CREATE TABLE IF NOT EXISTS role_permissions (
+    role_id INTEGER REFERENCES roles(id) ON DELETE CASCADE,
+    permission_id INTEGER REFERENCES permissions(id) ON DELETE CASCADE,
+    PRIMARY KEY (role_id, permission_id)
+);
+
+-- Seed Initial Roles
+INSERT INTO roles (name) VALUES ('CEO'), ('CTO'), ('ADMIN'), ('MANAGER'), ('HR'), ('FINANCE'), ('USER') 
+ON CONFLICT (name) DO NOTHING;
+
+-- Seed Initial Permissions
+INSERT INTO permissions (code, description) VALUES 
+('user:read', 'View all users'),
+('user:write', 'Create or update users'),
+('user:delete', 'Delete users'),
+('product:read', 'View products'),
+('product:write', 'Create or update products'),
+('product:delete', 'Delete products'),
+('category:write', 'Manage categories'),
+('order:read', 'View all orders'),
+('order:write', 'Create orders'),
+('order:status', 'Update order status'),
+('finance:read', 'View financial reports')
+ON CONFLICT (code) DO NOTHING;
+
+-- Map Permissions to Roles (Example: ADMIN gets everything)
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p 
+WHERE r.name IN ('CEO', 'ADMIN')
+ON CONFLICT DO NOTHING;
+
+-- Map MANAGER permissions
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p 
+WHERE r.name = 'MANAGER' AND p.code IN ('product:read', 'product:write', 'category:write', 'order:read', 'order:status')
+ON CONFLICT DO NOTHING;
+
+-- Map USER permissions
+INSERT INTO role_permissions (role_id, permission_id)
+SELECT r.id, p.id FROM roles r, permissions p 
+WHERE r.name = 'USER' AND p.code IN ('product:read', 'order:write')
+ON CONFLICT DO NOTHING;

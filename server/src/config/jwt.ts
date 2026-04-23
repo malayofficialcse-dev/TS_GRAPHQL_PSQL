@@ -3,10 +3,12 @@ import { env } from "./env.js";
 
 const SECRET = env.jwtSecret;
 
-export const generateToken = (user:any) => {
-    return jwt.sign({id:user.id,email:user.email}, SECRET,{
-        expiresIn:"7d",
-    });
+export const generateToken = (user: any) => {
+    return jwt.sign(
+        { id: user.id, email: user.email, role: user.role, permissions: user.permissions || [] },
+        SECRET,
+        { expiresIn: "7d" }
+    );
 };
 
 export const verifyToken = (token:string) => {
