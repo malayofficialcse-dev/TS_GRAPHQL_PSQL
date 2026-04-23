@@ -27,25 +27,25 @@ export default function CategoriesPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900">
+    <div className="min-h-screen bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100">
       <NavBar />
       <main className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
         <h1 className="text-3xl font-semibold">Categories</h1>
-        <p className="mt-2 text-slate-600">Browse categories managed by the backend module.</p>
+        <p className="mt-2 text-slate-600 dark:text-slate-400">Browse categories managed by the backend module.</p>
 
         <section className="mt-8 space-y-4">
           {loading ? (
-            <div className="rounded-3xl border border-slate-200 bg-white p-6 text-slate-600">Loading categories…</div>
+            <div className="rounded border border-slate-200 bg-white p-6 text-slate-600 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-400">Loading categories…</div>
           ) : error ? (
-            <div className="rounded-3xl border border-red-200 bg-red-50 p-6 text-red-700">{error}</div>
+            <div className="rounded border border-red-200 bg-red-50 p-6 text-red-700 dark:border-red-900 dark:bg-red-950/50">{error}</div>
           ) : categories.length === 0 ? (
-            <div className="rounded-3xl border border-slate-200 bg-white p-6 text-slate-600">No categories found.</div>
+            <div className="rounded border border-slate-200 bg-white p-6 text-slate-600 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-400">No categories found.</div>
           ) : (
             <div className="grid gap-4 sm:grid-cols-2">
               {categories.map((category) => (
-                <div key={category.id} className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+                <div key={category.id} className="rounded border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
                   <p className="text-base font-semibold">{category.name}</p>
-                  <p className="mt-2 text-sm text-slate-600">ID: {category.id}</p>
+                  <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">ID: {category.id}</p>
                 </div>
               ))}
             </div>

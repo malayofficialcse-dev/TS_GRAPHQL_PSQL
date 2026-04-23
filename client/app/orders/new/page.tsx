@@ -66,18 +66,18 @@ export default function CreateOrderPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900">
+    <div className="min-h-screen bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100">
       <NavBar />
       <main className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
         <h1 className="text-3xl font-semibold">Create a New Order</h1>
-        <p className="mt-2 text-slate-600">Choose a user, product, quantity, and status to place a new order.</p>
+        <p className="mt-2 text-slate-600 dark:text-slate-400">Choose a user, product, quantity, and status to place a new order.</p>
 
-        <section className="mt-8 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+        <section className="mt-8 rounded border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
           <form className="space-y-5" onSubmit={handleSubmit}>
             <label className="grid gap-2 text-sm">
               User
               <select
-                className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3"
+                className="w-full rounded border border-slate-300 bg-white px-4 py-3 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100"
                 value={userId}
                 onChange={(e) => setUserId(e.target.value)}
               >
@@ -93,7 +93,7 @@ export default function CreateOrderPage() {
             <label className="grid gap-2 text-sm">
               Product
               <select
-                className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3"
+                className="w-full rounded border border-slate-300 bg-white px-4 py-3 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100"
                 value={productId}
                 onChange={(e) => setProductId(e.target.value)}
               >
@@ -110,7 +110,7 @@ export default function CreateOrderPage() {
               <label className="grid gap-2 text-sm">
                 Quantity
                 <input
-                  className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3"
+                  className="w-full rounded border border-slate-300 bg-white px-4 py-3 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100"
                   type="number"
                   min={1}
                   value={quantity}
@@ -121,7 +121,7 @@ export default function CreateOrderPage() {
               <label className="grid gap-2 text-sm">
                 Status
                 <select
-                  className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3"
+                  className="w-full rounded border border-slate-300 bg-white px-4 py-3 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100"
                   value={status}
                   onChange={(e) => setStatus(e.target.value)}
                 >
@@ -134,14 +134,14 @@ export default function CreateOrderPage() {
             </div>
 
             <button
-              className="inline-flex h-12 items-center justify-center rounded-2xl bg-slate-900 px-6 text-sm font-semibold text-white transition hover:bg-slate-700"
+              className="inline-flex h-12 items-center justify-center rounded bg-slate-900 px-6 text-sm font-semibold text-white transition hover:bg-slate-700 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-slate-200"
               type="submit"
               disabled={loading}
             >
               {loading ? "Creating order…" : "Create Order"}
             </button>
 
-            {error ? <p className="text-sm text-red-600">{error}</p> : null}
+            {error ? <p className="text-sm text-red-600 dark:text-red-400">{error}</p> : null}
           </form>
         </section>
       </main>
