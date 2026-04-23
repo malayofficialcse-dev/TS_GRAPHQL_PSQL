@@ -6,7 +6,7 @@ type Product {
 }
 
 extend type Query {
-    getProducts:[Product]
+    getProducts(limit: Int, offset: Int, search: String): [Product]
     getProductById(id:ID!):Product
 }
 

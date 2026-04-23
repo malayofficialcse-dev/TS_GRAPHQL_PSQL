@@ -4,72 +4,63 @@ import { createOrderTable } from "./modules/order/order.service.js";
 import { createUserTable } from "./modules/user/user.service";
 import { createProductTable } from "./modules/products/product.service";
 import { ApolloServer } from "@apollo/server";
+import { expressMiddleware } from "@apollo/server/express4";
 import { typeDefs } from "./graphql/schema.js";
 import { resolvers } from "./graphql/resolvers.js";
 import { env } from "./config/env.js";
+import { authMiddleware } from "./middleware/auth.middleware";
+import { ZodError } from "zod";
 
 const PORT = env.port;
 
-const logDatabaseStartupError = (error: unknown) => {
-  const pgError = error as { code?: string; message?: string };
-
-  console.error("Database initialization failed.");
-
-  if (pgError?.code === "28P01") {
-    console.error(
-      `Postgres rejected the login for user "${env.dbUser}" on ${env.dbHost}:${env.dbPort}/${env.dbName}.`
-    );
-    console.error(
-      "Update DB_USER, DB_PASSWORD, and DB_NAME in server/.env to match your local PostgreSQL setup."
-    );
-    return;
-  }
-
-  console.error(pgError?.message ?? error);
-};
-
 async function startServer() {
   try {
-    // Initialize Apollo Server
     const server = new ApolloServer({
       typeDefs,
       resolvers,
+      formatError: (formattedError, error) => {
+        if (error instanceof Error && (error as any).originalError instanceof ZodError) {
+          const zodError = (error as any).originalError as ZodError;
+          return {
+            ...formattedError,
+            message: "Validation Failed",
+            extensions: {
+              code: "BAD_USER_INPUT",
+              errors: zodError.errors.map(err => ({
+                field: err.path.join('.'),
+                message: err.message
+              }))
+            }
+          };
+        }
+        return formattedError;
+      },
     });
 
-    // Start Apollo Server
     await server.start();
 
-    // Simple GraphQL endpoint handler
-    app.post("/graphql", async (req, res) => {
-      try {
-        const { query, variables, operationName } = req.body;
-        const result = await server.executeOperation({
-          query,
-          variables,
-          operationName,
-        });
-        res.json(result);
-      } catch (err) {
-        console.error("GraphQL error:", err);
-        res.status(500).json({ errors: [{ message: String(err) }] });
-      }
-    });
+    // Use standard Apollo 4 middleware
+    app.use(
+      "/graphql",
+      expressMiddleware(server, {
+        context: async ({ req }) => {
+          const user = authMiddleware(req);
+          return { user };
+        },
+      })
+    );
 
-    // Start Express server
     app.listen(PORT, async () => {
-      console.log(`Server running on port ${PORT}`);
-      console.log(`GraphQL endpoint: http://localhost:${PORT}/graphql`);
-      console.log(`REST API: http://localhost:${PORT}/api/users`);
-
+      console.log(`🚀 Server ready at http://localhost:${PORT}/graphql`);
+      
       try {
         await createCategoryTable();
         await createUserTable();
         await createProductTable();
         await createOrderTable();
-        
-        console.log("Database connection established");
+        console.log("✅ Database initialized");
       } catch (error) {
-        logDatabaseStartupError(error);
+        console.error("❌ Database initialization failed:", error);
       }
     });
   } catch (err) {

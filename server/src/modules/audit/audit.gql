@@ -1,0 +1,15 @@
+type AuditLog {
+    id: ID!
+    user_id: Int
+    user_email: String
+    user_name: String
+    action: String!
+    module: String!
+    details: String
+    ip_address: String
+    created_at: String!
+}
+
+extend type Query {
+    getAuditLogs(limit: Int, offset: Int): [AuditLog]
+}

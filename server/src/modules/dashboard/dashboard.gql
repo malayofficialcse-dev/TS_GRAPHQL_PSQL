@@ -1,0 +1,17 @@
+type Activity {
+    date: String!
+    orders: Int!
+    revenue: Float!
+}
+
+type DashboardStats {
+    totalUsers: Int!
+    totalProducts: Int!
+    totalOrders: Int!
+    totalRevenue: Float!
+    recentActivity: [Activity]
+}
+
+extend type Query {
+    getDashboardStats: DashboardStats
+}

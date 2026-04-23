@@ -2,6 +2,8 @@ import * as orderService from "./order.service.js";
 import * as userService from "../user/user.service.js";
 import * as productService from "../products/product.service.js";
 import { authorize } from "../../middleware/rbac.middleware";
+import { OrderSchema } from "../../middleware/validation";
+import { logAction } from "../audit/audit.service";
 
 export const orderResolvers = {
     Query: {
@@ -33,13 +35,25 @@ export const orderResolvers = {
             context: any
         ) => {
             await authorize(context.user, "order:write");
-            return await orderService.createOrder({
+            
+            // Validate input
+            OrderSchema.parse({
+                user_id: Number(args.user_id),
+                product_id: Number(args.product_id),
+                quantity: Number(args.quantity),
+                status: args.status
+            });
+
+            const order = await orderService.createOrder({
                 user_id: args.user_id,
                 product_id: args.product_id,
                 quantity: args.quantity,
                 total_price: 0, // Will be calculated
                 status: args.status,
             });
+
+            await logAction(context.user.id, "CREATE", "ORDER", `Order ID: ${order.id}`);
+            return order;
         },
         updateOrder: async (
             _: unknown,
@@ -47,7 +61,8 @@ export const orderResolvers = {
             context: any
         ) => {
             await authorize(context.user, "order:status");
-            return await orderService.updateOrder(
+            
+            const order = await orderService.updateOrder(
                 args.id,
                 args.user_id,
                 args.product_id,
@@ -55,10 +70,15 @@ export const orderResolvers = {
                 args.total_price,
                 args.status
             );
+
+            await logAction(context.user.id, "UPDATE_STATUS", "ORDER", `Order ID: ${args.id}, Status: ${args.status}`);
+            return order;
         },
         deleteOrder: async (_: unknown, args: { id: number }, context: any) => {
             await authorize(context.user, "order:delete");
-            return await orderService.deleteOrder(args.id);
+            const res = await orderService.deleteOrder(args.id);
+            await logAction(context.user.id, "DELETE", "ORDER", `Order ID: ${args.id}`);
+            return res;
         },
     },
     Order: {

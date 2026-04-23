@@ -17,10 +17,19 @@ export const createProduct = async (product:Product) => {
     return result.rows[0];
 }
 
-export const getProducts=async() => {
-    const result = await pool.query(queries.GET_PRODUCTS);
+export const getProducts = async (limit: number = 100, offset: number = 0, search?: string) => {
+    let query = queries.GET_PRODUCTS;
+    const params: any[] = [limit, offset];
+    
+    if (search) {
+        query += ` WHERE name ILIKE $3`;
+        params.push(`%${search}%`);
+    }
+    
+    query += ` LIMIT $1 OFFSET $2`;
+    const result = await pool.query(query, params);
     return result.rows;
-}
+};
 
 export const getProductById = async (id: number) => {
     const result = await pool.query(queries.GET_PRODUCT_BY_ID, [id]);
