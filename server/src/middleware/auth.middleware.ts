@@ -1,11 +1,15 @@
-import { verify } from "jsonwebtoken";
 import { verifyToken } from "../config/jwt";
 
-export const authMiddleware = (req:any) => {
-    const token = req.headers.authorization || "";
+export const authMiddleware = (req: any) => {
+  const authHeader = req.headers.authorization || "";
+  const token = authHeader.startsWith("Bearer ") ? authHeader.split(" ")[1] : authHeader;
 
-    if(!token) throw new Error("Unauthoriszed");
+  if (!token) return null;
 
-    const decode = verifyToken(token);
-    return decode;
-}
+  try {
+    const decoded = verifyToken(token);
+    return decoded;
+  } catch (err) {
+    return null;
+  }
+};

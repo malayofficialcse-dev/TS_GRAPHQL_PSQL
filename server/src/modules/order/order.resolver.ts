@@ -20,8 +20,11 @@ export const orderResolvers = {
     Mutation: {
         createOrder: async (
             _: unknown,
-            args: { user_id: number; product_id: number; quantity: number; status: string }
+            args: { user_id: number; product_id: number; quantity: number; status: string },
+            context: any
         ) => {
+            if (!context.user) throw new Error("Authentication required to create an order");
+            
             return await orderService.createOrder({
                 user_id: args.user_id,
                 product_id: args.product_id,
@@ -32,8 +35,11 @@ export const orderResolvers = {
         },
         updateOrder: async (
             _: unknown,
-            args: { id: number; user_id: number; product_id: number; quantity: number; total_price: number; status: string }
+            args: { id: number; user_id: number; product_id: number; quantity: number; total_price: number; status: string },
+            context: any
         ) => {
+            if (!context.user) throw new Error("Authentication required to update an order");
+
             return await orderService.updateOrder(
                 args.id,
                 args.user_id,
@@ -43,7 +49,8 @@ export const orderResolvers = {
                 args.status
             );
         },
-        deleteOrder: async (_: unknown, args: { id: number }) => {
+        deleteOrder: async (_: unknown, args: { id: number }, context: any) => {
+            if (!context.user) throw new Error("Authentication required to delete an order");
             return await orderService.deleteOrder(args.id);
         },
     },
