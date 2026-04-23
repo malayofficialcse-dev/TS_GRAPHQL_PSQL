@@ -31,6 +31,16 @@ export const GET_ORDERS_BY_PRODUCT_ID = `
     SELECT * FROM orders WHERE product_id = $1 ORDER BY id ASC;
 `;
 
+export const GET_ORDERS_BY_STATUS = `
+    SELECT * FROM orders WHERE status = $1 ORDER BY id ASC;
+`;
+
+export const GET_ORDERS_BY_CATEGORY = `
+    SELECT o.* FROM orders o
+    JOIN products p ON o.product_id = p.id
+    WHERE p.category_id = $1 ORDER BY o.id ASC;
+`;
+
 export const UPDATE_ORDER = `
     UPDATE orders
     SET user_id = $1, product_id = $2, quantity = $3, total_price = $4, status = $5

@@ -13,10 +13,12 @@ type Order {
 extend type Query {
     getOrders:[Order]
     getOrderById(id:ID!):Order
+    getOrdersByStatus(status:String!):[Order]
+    getOrdersByCategory(category_id:ID!):[Order]
 }
 
 extend type Mutation {
-    createOrder(user_id:ID!,product_id:ID!,quantity:Int!,total_price:Float!,status:String!):Order
+    createOrder(user_id:ID!,product_id:ID!,quantity:Int!,status:String!):Order
     updateOrder(id:ID!,user_id:ID!,product_id:ID!,quantity:Int!,total_price:Float!,status:String!):Order
     deleteOrder(id:ID!):Order
 }

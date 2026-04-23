@@ -10,17 +10,23 @@ export const orderResolvers = {
         getOrderById: async (_: unknown, args: { id: number }) => {
             return await orderService.getOrderById(args.id);
         },
+        getOrdersByStatus: async (_: unknown, args: { status: string }) => {
+            return await orderService.getOrdersByStatus(args.status);
+        },
+        getOrdersByCategory: async (_: unknown, args: { category_id: number }) => {
+            return await orderService.getOrdersByCategory(args.category_id);
+        },
     },
     Mutation: {
         createOrder: async (
             _: unknown,
-            args: { user_id: number; product_id: number; quantity: number; total_price: number; status: string }
+            args: { user_id: number; product_id: number; quantity: number; status: string }
         ) => {
             return await orderService.createOrder({
                 user_id: args.user_id,
                 product_id: args.product_id,
                 quantity: args.quantity,
-                total_price: args.total_price,
+                total_price: 0, // Will be calculated
                 status: args.status,
             });
         },
