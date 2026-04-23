@@ -14,12 +14,14 @@ export const userResolvers = {
         createUser: async (_: any, args: any) => {
             return await userService.createUser(args);
         },
-        deleteUser: async (_: any, args: { id: number }) => {
+        deleteUser: async (_: any, args: { id: number }, context: any) => {
+            if (!context.user) throw new Error("Authentication required to delete a user");
             await userService.deleteUser(args.id);
             return "User deleted";
         },
-        updateUser: async (_:any,args:any) => {
-            return await userService.updateUser(args.id,args.name);
+        updateUser: async (_: any, args: any, context: any) => {
+            if (!context.user) throw new Error("Authentication required to update user info");
+            return await userService.updateUser(args.id, args.name);
         }
     },
 };
