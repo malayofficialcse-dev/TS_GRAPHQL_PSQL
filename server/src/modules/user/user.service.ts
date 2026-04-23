@@ -1,15 +1,16 @@
+import bcrypt from "bcrypt";
 import { pool } from "../../config/db.js";
 import * as queries from "./user.query.js";
 import { User } from "./user.model.js";
-
 
 export const createUserTable = async () => {
     await pool.query(queries.CREATE_USER_TABLE);
 };
 
-export const createUser = async (user:User) => {
-    const {name,email,password} = user;
-    const result = await pool.query(queries.INSERT_USER, [name, email, password]);
+export const createUser = async (user: User) => {
+    const { name, email, password, role = 'USER' } = user;
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const result = await pool.query(queries.INSERT_USER, [name, email, hashedPassword, role]);
     return result.rows[0];
 };
 
