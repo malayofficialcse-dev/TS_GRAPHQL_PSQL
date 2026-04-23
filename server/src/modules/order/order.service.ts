@@ -10,6 +10,9 @@ export const createOrder = async (order: Order) => {
     const result = await pool.query(queries.CREATE_ORDER, [
         order.user_id,
         order.product_id,
+        order.quantity,
+        order.total_price,
+        order.status,
     ]);
 
     return result.rows[0];
@@ -38,11 +41,17 @@ export const getOrdersByProductId = async (product_id: number) => {
 export const updateOrder = async (
     id: number,
     user_id: number,
-    product_id: number
+    product_id: number,
+    quantity: number,
+    total_price: number,
+    status: string
 ) => {
     const result = await pool.query(queries.UPDATE_ORDER, [
         user_id,
         product_id,
+        quantity,
+        total_price,
+        status,
         id,
     ]);
 

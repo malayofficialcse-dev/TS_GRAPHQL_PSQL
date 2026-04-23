@@ -2,13 +2,17 @@ export const CREATE_ORDER_TABLE = `
     CREATE TABLE IF NOT EXISTS orders (
         id SERIAL PRIMARY KEY,
         user_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-        product_id INT NOT NULL REFERENCES products(id) ON DELETE CASCADE
+        product_id INT NOT NULL REFERENCES products(id) ON DELETE CASCADE,
+        quantity INT NOT NULL,
+        total_price DECIMAL(10,2) NOT NULL,
+        order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        status VARCHAR(50) NOT NULL
     );
 `;
 
 export const CREATE_ORDER = `
-    INSERT INTO orders(user_id,product_id)
-    VALUES ($1,$2) RETURNING *;
+    INSERT INTO orders(user_id,product_id,quantity,total_price,status)
+    VALUES ($1,$2,$3,$4,$5) RETURNING *;
 `;
 
 export const GET_ORDERS = `
@@ -29,8 +33,8 @@ export const GET_ORDERS_BY_PRODUCT_ID = `
 
 export const UPDATE_ORDER = `
     UPDATE orders
-    SET user_id = $1, product_id = $2
-    WHERE id = $3
+    SET user_id = $1, product_id = $2, quantity = $3, total_price = $4, status = $5
+    WHERE id = $6
     RETURNING *;
 `;
 

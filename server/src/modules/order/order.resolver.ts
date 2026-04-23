@@ -14,21 +14,27 @@ export const orderResolvers = {
     Mutation: {
         createOrder: async (
             _: unknown,
-            args: { user_id: number; product_id: number }
+            args: { user_id: number; product_id: number; quantity: number; total_price: number; status: string }
         ) => {
             return await orderService.createOrder({
                 user_id: args.user_id,
                 product_id: args.product_id,
+                quantity: args.quantity,
+                total_price: args.total_price,
+                status: args.status,
             });
         },
         updateOrder: async (
             _: unknown,
-            args: { id: number; user_id: number; product_id: number }
+            args: { id: number; user_id: number; product_id: number; quantity: number; total_price: number; status: string }
         ) => {
             return await orderService.updateOrder(
                 args.id,
                 args.user_id,
-                args.product_id
+                args.product_id,
+                args.quantity,
+                args.total_price,
+                args.status
             );
         },
         deleteOrder: async (_: unknown, args: { id: number }) => {

@@ -2,6 +2,10 @@ type Order {
     id:ID!
     user_id:ID!
     product_id:ID!
+    quantity:Int!
+    total_price:Float!
+    order_date:String!
+    status:String!
     user:User
     product:Product
 }
@@ -12,8 +16,8 @@ extend type Query {
 }
 
 extend type Mutation {
-    createOrder(user_id:ID!,product_id:ID!):Order
-    updateOrder(id:ID!,user_id:ID!,product_id:ID!):Order
+    createOrder(user_id:ID!,product_id:ID!,quantity:Int!,total_price:Float!,status:String!):Order
+    updateOrder(id:ID!,user_id:ID!,product_id:ID!,quantity:Int!,total_price:Float!,status:String!):Order
     deleteOrder(id:ID!):Order
 }
 
