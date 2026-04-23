@@ -1,10 +1,5 @@
 import express from "express";
 import cors from "cors";
-import { ApolloServer } from "@apollo/server";
-import { startStandaloneServer } from "@apollo/server/standalone";
-
-import { typeDefs } from "./graphql/schema.js";
-import { resolvers } from "./graphql/resolvers.js";
 import categoryRoutes from "./modules/category/category.route.js";
 import userRoutes from "./modules/user/user.route.js";
 
@@ -21,20 +16,5 @@ app.use("/api/users", userRoutes);
 app.get("/health", (req, res) => {
   res.json({ status: "OK" });
 });
-
-// GraphQL Server setup
-export async function startGraphQL() {
-  const apolloServer = new ApolloServer({
-    typeDefs,
-    resolvers,
-  });
-
-  try {
-    await apolloServer.start();
-    console.log("GraphQL server started");
-  } catch (err) {
-    console.error("Failed to start GraphQL server:", err);
-  }
-}
 
 export default app;
