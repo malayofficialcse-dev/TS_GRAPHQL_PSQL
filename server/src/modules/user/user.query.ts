@@ -1,22 +1,23 @@
-export const CREATE_USER_TABLE=`
+export const CREATE_USER_TABLE = `
     CREATE TABLE IF NOT EXISTS users (
-     id SERIAL PRIMARY KEY,
-     name TEXT,
-     email VARCHAR(20) UNIQUE NOT NULL,
-     password TEXT NOT NULL 
+      id SERIAL PRIMARY KEY,
+      name TEXT,
+      email VARCHAR(50) UNIQUE NOT NULL,
+      password TEXT NOT NULL,
+      role VARCHAR(20) DEFAULT 'USER'
 );`;
 
-export const INSERT_USER=`
-    INSERT INTO users(name,email,password)
-        VALUES ($1,$2,$3)
+export const INSERT_USER = `
+    INSERT INTO users(name, email, password, role)
+        VALUES ($1, $2, $3, $4)
         RETURNING *;
 `;
 
-export const GET_USERS=`
+export const GET_USERS = `
     SELECT * FROM users;
 `;
 
-export const GET_USER_BY_ID=`
+export const GET_USER_BY_ID = `
     SELECT * FROM users WHERE id = $1;
 `;
 
@@ -25,5 +26,5 @@ export const DELETE_USER = `
 `;
 
 export const UPDATE_USER = `
-    UPDATE users SET name=$1 WHERE id=$2 RETURNING *;
+    UPDATE users SET name=$1, role=$2 WHERE id=$3 RETURNING *;
 `;

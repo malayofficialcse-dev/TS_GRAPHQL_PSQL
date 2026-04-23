@@ -1,4 +1,5 @@
 import * as categoryService from "./category.service.js";
+import { authorize } from "../../middleware/rbac.middleware";
 
 export const categoryResolvers = {
     Query: {
@@ -10,15 +11,18 @@ export const categoryResolvers = {
         },
     },
     Mutation: {
-        createCategory: async (_: unknown, args: { name: string }) => {
+        createCategory: async (_: unknown, args: { name: string }, context: any) => {
+            authorize(context.user, ["ADMIN", "MANAGER"]);
             return await categoryService.createCategory({ name: args.name });
         },
-        deleteCategory: async (_: unknown, args: { id: number }) => {
+        deleteCategory: async (_: unknown, args: { id: number }, context: any) => {
+            authorize(context.user, ["ADMIN", "MANAGER"]);
             await categoryService.deleteCategory(args.id);
             return "Category deleted";
         },
-        updateCategory:async (_:unknown,args:{id:number,name:string}) => {
-            return await categoryService.updateCategory(args.id,args.name);
+        updateCategory: async (_: unknown, args: { id: number, name: string }, context: any) => {
+            authorize(context.user, ["ADMIN", "MANAGER"]);
+            return await categoryService.updateCategory(args.id, args.name);
         }
     },
 };

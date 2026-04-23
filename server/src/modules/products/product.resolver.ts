@@ -1,4 +1,5 @@
 import * as productService from "./product.service.js";
+import { authorize } from "../../middleware/rbac.middleware";
 
 export const productResolvers = {
     Query: {
@@ -12,8 +13,10 @@ export const productResolvers = {
     Mutation: {
         createProduct: async (
             _: unknown,
-            args: { name: string; price: number; category_id?: number }
+            args: { name: string; price: number; category_id?: number },
+            context: any
         ) => {
+            authorize(context.user, ["ADMIN", "MANAGER"]);
             return await productService.createProduct({
                 name: args.name,
                 price: args.price,
@@ -22,8 +25,10 @@ export const productResolvers = {
         },
         updateProduct: async (
             _: unknown,
-            args: { id: number; name: string; price: number; category_id?: number }
+            args: { id: number; name: string; price: number; category_id?: number },
+            context: any
         ) => {
+            authorize(context.user, ["ADMIN", "MANAGER"]);
             return await productService.updateProduct(
                 args.id,
                 args.name,
@@ -31,7 +36,8 @@ export const productResolvers = {
                 args.category_id
             );
         },
-        deleteProduct: async (_: unknown, args: { id: number }) => {
+        deleteProduct: async (_: unknown, args: { id: number }, context: any) => {
+            authorize(context.user, ["ADMIN", "MANAGER"]);
             return await productService.deleteProduct(args.id);
         },
     },
