@@ -19,6 +19,10 @@ export const GET_PRODUCT_BY_ID = `
     SELECT * FROM products WHERE id = $1;
 `;
 
+export const GET_PRODUCTS_BY_CATEGORY_ID = `
+    SELECT * FROM products WHERE category_id = $1 ORDER BY id ASC;
+`;
+
 export const UPDATE_PRODUCT = `
     UPDATE products
     SET name = $1, price = $2, category_id = $3

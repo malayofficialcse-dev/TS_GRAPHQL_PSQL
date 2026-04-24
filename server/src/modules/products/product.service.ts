@@ -27,6 +27,11 @@ export const getProductById = async (id: number) => {
     return result.rows[0];
 };
 
+export const getProductsByCategoryId = async (category_id: number) => {
+    const result = await pool.query(queries.GET_PRODUCTS_BY_CATEGORY_ID, [category_id]);
+    return result.rows;
+};
+
 export const updateProduct =  async (
     id:number,
     name:string,

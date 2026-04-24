@@ -3,6 +3,7 @@ type Product {
     name:String!
     price:Float!
     category_id:ID
+    category:Category
 }
 
 extend type Query {

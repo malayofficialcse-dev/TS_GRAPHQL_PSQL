@@ -6,7 +6,7 @@ import { generateToken } from "../../config/jwt";
 export const signup = async (name:string,email:string,password:string) => {
     const hashed = await bcrypt.hash(password,10);
 
-    const res = await pool.query(q.CREATE_USER,[name,email,hashed]);
+    const res = await pool.query(q.CREATE_USER,[name,email,hashed,"USER"]);
     const user = res.rows[0];
 
     const token = generateToken(user);

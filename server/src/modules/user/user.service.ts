@@ -8,8 +8,8 @@ export const createUserTable = async () => {
 };
 
 export const createUser = async (user:User) => {
-    const {name,email,password} = user;
-    const result = await pool.query(queries.INSERT_USER, [name, email, password]);
+    const {name,email,password,role = "USER"} = user;
+    const result = await pool.query(queries.INSERT_USER, [name, email, password, role]);
     return result.rows[0];
 };
 
@@ -27,8 +27,8 @@ export const deleteUser = async (id : number) => {
     await pool.query(queries.DELETE_USER,[id]);
 };
 
-export const updateUser = async (id:number,name:string) => {
-    const res = await pool.query(queries.UPDATE_USER,[name,id]);
+export const updateUser = async (id:number,name:string,role:string = "USER") => {
+    const res = await pool.query(queries.UPDATE_USER,[name,role,id]);
     return res.rows[0];
 };
 

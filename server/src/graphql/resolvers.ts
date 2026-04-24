@@ -18,6 +18,9 @@ export const resolvers = {
     ...userResolvers.Mutation,
     ...authResolver.Mutation,
   },
+  Category: {
+    ...categoryResolvers.Category,
+  },
   Order: {
     ...orderResolvers.Order,
   },
@@ -25,6 +28,7 @@ export const resolvers = {
     ...orderResolvers.User,
   },
   Product: {
+    ...productResolvers.Product,
     ...orderResolvers.Product,
   },
 };
