@@ -3,14 +3,14 @@ import {pool} from "../../config/db";
 import *  as q from "./auth.query";
 import { generateToken } from "../../config/jwt";
 
-export const signup = async (name:string,email:string,password:string) => {
-    const hashed = await bcrypt.hash(password,10);
+export const signup = async (name: string, email: string, password: string) => {
+    const hashed = await bcrypt.hash(password, 10);
 
-    const res = await pool.query(q.CREATE_USER,[name,email,hashed,"USER"]);
+    const res = await pool.query(q.CREATE_USER, [name, email, hashed, 'USER']);
     const user = res.rows[0];
 
     const token = generateToken(user);
-    return {user,token};
+    return { user, token };
 };
 
 
